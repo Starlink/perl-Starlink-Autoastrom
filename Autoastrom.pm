@@ -874,7 +874,7 @@ sub obsdata {
         if( $value =~ /^[+\-]?\d+:\d+:[\d\.]+$/ ) {
           $value = new Astro::Coords::Angle( $value, units => 'sex' );
         } elsif( $value =~ /^-?[\d\.]+$/ ) {
-          $value = new Astro::Coords::Angle( $value, units => 'hour' );
+          $value = new Astro::Coords::Angle( $value, units => 'deg' );
         } else {
           $self->printstd( "--E Could not parse $value to form Declination from obsdata information.\n" )
             if $self->starlink_output;
