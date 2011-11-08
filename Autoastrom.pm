@@ -1902,10 +1902,10 @@ sub solve {
     }
 
     if( $prev_rms != 0 &&
-        $curr_rms > $prev_rms ) {
+        $curr_rms >= $prev_rms ) {
 
       if( $self->starlink_output ) {
-        $self->printstd( sprintf( "--I Current RMS of %.5f is greater than previous RMS of %.5f.\n",
+        $self->printstd( sprintf( "--I Current RMS of %.5f is greater than or equal to previous RMS of %.5f.\n",
                                   $curr_rms,
                                   $prev_rms ) );
         $self->printstd( "--I Halting iterations and using previous fit.\n" );
