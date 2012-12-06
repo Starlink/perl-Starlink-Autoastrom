@@ -37,6 +37,8 @@ use Astro::Coords;
 use Astro::Correlate;
 use Astro::Catalog;
 use Astro::Catalog::Query::SkyCat;
+use Astro::Flux;
+use Astro::Fluxes;
 use Astro::FITS::HdrTrans qw/ translate_from_FITS /;
 use Astro::FITS::Header;
 use Astro::FITS::Header::NDF;
