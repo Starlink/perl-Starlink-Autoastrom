@@ -46,7 +46,7 @@ use Astro::WaveBand;
 
 use Time::HiRes qw/ time /;
 
-use NDF;
+use NDF '1.52';
 
 use constant DAS2R => 4.8481368110953599358991410235794797595635330237270e-6;
 
@@ -1309,13 +1309,7 @@ sub solve {
 
       # Handle errors.
       if( $STATUS != &NDF::SAI__OK ) {
-        my ( $oplen, @errs );
-        do {
-          err_load( my $param, my $parlen, my $opstr, $oplen, $STATUS );
-          push @errs, $opstr;
-        } until ( $oplen == 1 );
-        err_annul( $STATUS );
-        err_end( $STATUS );
+        my @errs = NDF::err_flush_to_string($STATUS);
         $self->printstd( "--E Error retrieving WCS from NDF.\n" ) if $self->starlink_output;
         croak "Error retrieving WCS from NDF:\n" . join "\n", @errs;
       }
@@ -1953,13 +1947,7 @@ sub solve {
     # extract error messages and annul error status
     ndf_end($STATUS);
     if( $STATUS != &NDF::SAI__OK ) {
-      my ( $oplen, @errs );
-      do {
-        err_load( my $param, my $parlen, my $opstr, $oplen, $STATUS );
-        push @errs, $opstr;
-      } until ( $oplen == 1 );
-      err_annul( $STATUS );
-      err_end( $STATUS );
+      my @errs = NDF::err_flush_to_string($STATUS);
       croak "Error writing new WCS to NDF:\n" . join "\n", @errs;
     }
     err_end( $STATUS );
@@ -2143,13 +2131,7 @@ sub central_coordinates {
 
   # Handle errors
   if ( $STATUS != &NDF::SAI__OK ) {
-    my ( $oplen, @errs );
-    do {
-      err_load( my $param, my $parlen, my $opstr, $oplen, $STATUS );
-      push @errs, $opstr;
-    } until ( $oplen == 1 );
-    err_annul( $STATUS );
-    err_end( $STATUS );
+    my @errs = NDF::err_flush_to_string($STATUS);
     croak "Error determining central coordinates of NDF:\n" . join "\n", @errs;
   }
   err_end( $STATUS );
@@ -2218,13 +2200,7 @@ sub _determine_search_params {
 
 # Handle errors.
   if( $STATUS != &NDF::SAI__OK ) {
-    my ( $oplen, @errs );
-    do {
-      err_load( my $param, my $parlen, my $opstr, $oplen, $STATUS );
-      push @errs, $opstr;
-    } until ( $oplen == 1 );
-    err_annul( $STATUS );
-    err_end( $STATUS );
+    my @errs = NDF::err_flush_to_string($STATUS);
     croak "Error determining NDF pixel bounds:\n" . join "\n", @errs;
   }
   err_end( $STATUS );
