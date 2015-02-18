@@ -320,7 +320,7 @@ As discussed in \xref{SUN/5}{sun5}{}, these employ a slight extension to the FIT
 standards, since they necessarily include distortion information which has
 been deferred until Paper~III \cite{fitswcs3}.  Nonetheless, they are
 perfectly conformant.  If, however, \autoastrom\ had to be configured with
-support for an old version of \AST\, then it might have had to generate FITS
+support for an old version of \AST, then it might have had to generate FITS
 headers which conformed to the drafts of paper~II, and thus do not conform to
 the final version -- such FITS files should not be used outside of this
 application, and it would be best to update your version of AST to a current
@@ -336,7 +336,7 @@ For further details, see the FITS standard \cite{nost-100-2} and the three
 published FITS-WCS papers, \cite[FITS WCS Paper I]{fitswcs1}, \cite[FITS WCS
 Paper II]{fitswcs2} and \cite[FITS WCS Paper III]{fitswcs3}; the web pages
 which cover the FITS-WCS process are at
-\texttt{http://www.cv.nrao.edu/fits/documents/wcs/wcs.html}.
+\url{http://www.cv.nrao.edu/fits/documents/wcs/wcs.html}.
 
 \subsection{\xlabel{sb_webproxies}Web proxies\label{sb:webproxies}}
 
@@ -530,7 +530,7 @@ Type: switch; default: true.
 \subsubsection{\xlabel{sb_options_iterrms_abs}--iterrms\_abs\label{sb:options:iterrms_abs}}
 
 When the absolute RMS of a fit reaches this value, iterations will cease and
-the current WCS will be used. For more information on \autoastrom\'s iteration
+the current WCS will be used. For more information on \autoastrom's iteration
 process, see Section~\ref{sb:iterations}.
 
 Type: real; default; none.
@@ -539,7 +539,7 @@ Type: real; default; none.
 
 When the difference between the current RMS and the previous fit's RMS reaches
 this value, iterations will cease and the current WCS will be used. For more
-information on \autoastrom\'s iteration process, see
+information on \autoastrom's iteration process, see
 Section~\ref{sb:iterations}.
 
 Type: real; default; none.
@@ -558,7 +558,7 @@ Type: switch; default: false.
 If true, temporary files will not be deleted at the end of processing.  This
 is useful for debugging, both at the low level when there is something wrong
 with the script itself, but also when you wish to examine the sequence of
-calls to FINDOFF and \ASTROM\, or examine the \ASTROM\ input and output
+calls to FINDOFF and \ASTROM, or examine the \ASTROM\ input and output
 files.
 
 All the temporary files are created in a temporary directory which is
@@ -581,7 +581,7 @@ distributed with \autoastrom, but it should be compatible with any later
 version.
 
 Alternatively, you can use the FINDOFF application, which is part of
-\CCDPACKref\.  This does work, but is rather slow, and is completely thrown by
+\CCDPACKref.  This does work, but is rather slow, and is completely thrown by
 a CCD image with unequal X and Y scales, making it essentially unusable if the
 image NDF does not have some astrometry already, or if you try to specify a
 position with \texttt{--obsdata} (see Section~\ref{sb:options:obsdata}).
@@ -613,7 +613,7 @@ Type: integer; default: 9.
 \subsubsection{\xlabel{sb_options_maxiter}--maxiter\label{sb:options:maxiter}}
 
 The maximum number of iterations to perform. For more information on
-\autoastrom\'s iteration process, see Section~\ref{sb:iterations}.
+\autoastrom's iteration process, see Section~\ref{sb:iterations}.
 
 Type: integer; default: 10.
 
@@ -725,7 +725,7 @@ when \texttt{invert} is false, and $-$ when \texttt{invert} is true.
 
 Additionally, there are keywords which specify observation data: time, station
 coordinates, meteorological data and colour.  These are described in
-Table~\ref{tab:datetime}.  For fuller details on these, see \ASTROMref\.  Note
+Table~\ref{tab:datetime}.  For fuller details on these, see \ASTROMref.  Note
 that the \texttt{source} keyword discussed above does not affect the priority
 of these keywords: if they are specified, they override any values obtained
 from the NDF or its FITS extensions.
@@ -759,7 +759,7 @@ Type: string; defaults: see above.
 \subsubsection{\xlabel{sb_options_skycatconfig}--skycatconfig\label{sb:options:skycatconfig}}
 
 The SkyCat library has a default configuration file, which you can examine at
-\texttt{http://archive.eso.org/skycat/skycat2.0.cfg}.  For some applications,
+\url{http://archive.eso.org/skycat/skycat2.0.cfg}.  For some applications,
 it may be appropriate to use an alternative configuration file.  If so, you
 can point to it using this option.  For more information on SkyCat,
 catalogues, and the configuration file, see the \SkyCatFAQ.
@@ -856,7 +856,7 @@ to use Starlink software) and experiment.
 \subsection{\xlabel{sb_environment}Environment\label{sb:environment}}
 
 The environment variable \texttt{ASTROM\_DIR} points to the installed location
-of \ASTROM\, \texttt{CCDPACK\_DIR} points to \CCDPACKref\, and
+of \ASTROM, \texttt{CCDPACK\_DIR} points to \CCDPACKref, and
 \texttt{EXTRACTOR\_DIR} points to \SExtractor. All of these environment
 variables will be set up for you when you do the initialisation to use
 Starlink software.
@@ -883,7 +883,7 @@ application could process images from multiple CCDs arranged in a mosaic.
 \subsection{\xlabel{sb_restrictions}Restrictions and
   limitations\label{sb:restrictions}}
 
-The script inherits some limitations from \ASTROM\, and some from CCDPACK's
+The script inherits some limitations from \ASTROM, and some from CCDPACK's
 FINDOFF.
 
 The limitations due to \ASTROM\ are as follows (quoted from \xref{SUN/5, Section~5}{sun5}{limitations}):
@@ -937,7 +937,7 @@ a problem if the initial astrometry is good enough.  It's not at present
 
 \bibitem{sextractor-web} Bertin, E. SExtractor program [online, cited 25 April
   2005] URL:
-  \texttt{$<$http://terapix.iap.fr/rubrique.php?id\_rubrique=91/$>$}.
+  $<$\url{http://terapix.iap.fr/rubrique.php?id\_rubrique=91/}$>$.
 
 \bibitem{fitswcs2} Calabretta, M.R. \& Greisen, E.W. Representations of
   celestial coordinates in FITS (``Paper II''). \textit{Astronom. Astrophys.},
@@ -957,7 +957,7 @@ a problem if the initial astrometry is good enough.  It's not at present
   376:359-380, September 2001.
 
 \bibitem{match-home} Richmond, M.W. Matching lists of stars [online, cited
-  April 2005] URL:\texttt{$<$http://spiff.rit.edu/match/$>$}
+  April 2005] URL: $<$\url{http://spiff.rit.edu/match/}$>$
 
 \bibitem{valdes95} Valdes, F.G., Campusano, L.E., Velasquez, J.D., \& Stetson,
   P.B. FOCAS automatic catalog matching algorithms. \textit{Publications of
