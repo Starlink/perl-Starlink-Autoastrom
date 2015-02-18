@@ -1,258 +1,75 @@
-\documentclass[twoside,11pt]{article}
+\documentclass[twoside,11pt,nolof]{starlink}
 
 % ? Specify used packages
-\usepackage{graphicx}        %  Use this one for final production.
-\usepackage{amsmath}
-% \usepackage[draft]{graphicx} %  Use this one for drafting.
 % ? End of specify used packages
-
-\pagestyle{myheadings}
 
 % -----------------------------------------------------------------------------
 % ? Document identification
-\newcommand{\stardoccategory}  {Starlink User Note}
-\newcommand{\stardocinitials}  {SUN}
-\newcommand{\stardocsource}    {sun242.1}
-\newcommand{\stardocnumber}    {242.1}
-\newcommand{\stardocauthors}   {Norman Gray \& Brad Cavanagh}
-\newcommand{\stardocdate}      {2006 April 19}
-\newcommand{\stardoctitle}     {Autoastrometry for Mosaics}
-\newcommand{\stardocversion}   {1.5}
-\newcommand{\stardocmanual}    {User's Guide}
+\stardoccategory    {Starlink User Note}
+\stardocinitials    {SUN}
+\stardocsource      {sun242.1}
+\stardocnumber      {242.1}
+\stardocauthors     {Norman Gray \& Brad Cavanagh}
+\stardocdate        {2006 April 19}
+\stardoctitle       {Autoastrometry for Mosaics}
+\stardocversion     {1.5}
+\stardocmanual      {User's Guide}
+\stardocabstract{
+We describe the \autoastrom\ package, which provides an interface to the
+\ASTROM\ application. This creates a semi-automatic route to doing astrometry
+on CCD images.
+}
+
 % ? End of document identification
 % -----------------------------------------------------------------------------
-
-\newcommand{\stardocname}{\stardocinitials /\stardocnumber}
-\markboth{\stardocname}{\stardocname}
-%\markright{\stardocname}
-\setlength{\textwidth}{160mm}
-\setlength{\textheight}{230mm}
-\setlength{\topmargin}{-2mm}
-\setlength{\oddsidemargin}{0mm}
-\setlength{\evensidemargin}{0mm}
-\setlength{\parindent}{0mm}
-\setlength{\parskip}{\medskipamount}
-\setlength{\unitlength}{1mm}
-
-% -----------------------------------------------------------------------------
-%  Hypertext definitions.
-%  ======================
-%  These are used by the LaTeX2HTML translator in conjunction with star2html.
-
-%  Comment.sty: version 2.0, 19 June 1992
-%  Selectively in/exclude pieces of text.
-%
-%  Author
-%    Victor Eijkhout                                      <eijkhout@cs.utk.edu>
-%    Department of Computer Science
-%    University Tennessee at Knoxville
-%    104 Ayres Hall
-%    Knoxville, TN 37996
-%    USA
-
-%  Do not remove the %\begin{rawtex} and %\end{rawtex} lines (used by
-%  star2html to signify raw TeX that latex2html cannot process).
-%\begin{rawtex}
-\makeatletter
-\def\makeinnocent#1{\catcode`#1=12 }
-\def\csarg#1#2{\expandafter#1\csname#2\endcsname}
-
-\def\ThrowAwayComment#1{\begingroup
-    \def\CurrentComment{#1}%
-    \let\do\makeinnocent \dospecials
-    \makeinnocent\^^L% and whatever other special cases
-    \endlinechar`\^^M \catcode`\^^M=12 \xComment}
-{\catcode`\^^M=12 \endlinechar=-1 %
- \gdef\xComment#1^^M{\def\test{#1}
-      \csarg\ifx{PlainEnd\CurrentComment Test}\test
-          \let\html@next\endgroup
-      \else \csarg\ifx{LaLaEnd\CurrentComment Test}\test
-            \edef\html@next{\endgroup\noexpand\end{\CurrentComment}}
-      \else \let\html@next\xComment
-      \fi \fi \html@next}
-}
-\makeatother
-
-\def\includecomment
- #1{\expandafter\def\csname#1\endcsname{}%
-    \expandafter\def\csname end#1\endcsname{}}
-\def\excludecomment
- #1{\expandafter\def\csname#1\endcsname{\ThrowAwayComment{#1}}%
-    {\escapechar=-1\relax
-     \csarg\xdef{PlainEnd#1Test}{\string\\end#1}%
-     \csarg\xdef{LaLaEnd#1Test}{\string\\end\string\{#1\string\}}%
-    }}
-
-%  Define environments that ignore their contents.
-\excludecomment{comment}
-\excludecomment{rawhtml}
-\excludecomment{htmlonly}
-%\end{rawtex}
-
-%  Hypertext commands etc. This is a condensed version of the html.sty
-%  file supplied with LaTeX2HTML by: Nikos Drakos <nikos@cbl.leeds.ac.uk> &
-%  Jelle van Zeijl <jvzeijl@isou17.estec.esa.nl>. The LaTeX2HTML documentation
-%  should be consulted about all commands (and the environments defined above)
-%  except \xref and \xlabel which are Starlink specific.
-
-\newcommand{\htmladdnormallinkfoot}[2]{#1\footnote{#2}}
-\newcommand{\htmladdnormallink}[2]{#1}
-\newcommand{\htmladdimg}[1]{}
-\newenvironment{latexonly}{}{}
-\newcommand{\hyperref}[4]{#2\ref{#4}#3}
-\newcommand{\htmlref}[2]{#1}
-\newcommand{\htmlimage}[1]{}
-\newcommand{\htmladdtonavigation}[1]{}
-
-%  Starlink cross-references and labels.
-\newcommand{\xref}[3]{#1}
-\newcommand{\xlabel}[1]{}
-
-%  LaTeX2HTML symbol.
-\newcommand{\latextohtml}{{\bf LaTeX}{2}{\tt{HTML}}}
-
-%  Define command to re-centre underscore for Latex and leave as normal
-%  for HTML (severe problems with \_ in tabbing environments and \_\_
-%  generally otherwise).
-\newcommand{\latex}[1]{#1}
-\newcommand{\setunderscore}{\renewcommand{\_}{{\tt\symbol{95}}}}
-\latex{\setunderscore}
-
-%  Redefine the \tableofcontents command. This procrastination is necessary
-%  to stop the automatic creation of a second table of contents page
-%  by latex2html.
-\newcommand{\latexonlytoc}[0]{\tableofcontents}
-
-% -----------------------------------------------------------------------------
-%  Debugging.
-%  =========
-%  Remove % on the following to debug links in the HTML version using Latex.
-
-% \newcommand{\hotlink}[2]{\fbox{\begin{tabular}[t]{@{}c@{}}#1\\\hline{\footnotesize #2}\end{tabular}}}
-% \renewcommand{\htmladdnormallinkfoot}[2]{\hotlink{#1}{#2}}
-% \renewcommand{\htmladdnormallink}[2]{\hotlink{#1}{#2}}
-% \renewcommand{\hyperref}[4]{\hotlink{#1}{\S\ref{#4}}}
-% \renewcommand{\htmlref}[2]{\hotlink{#1}{\S\ref{#2}}}
-% \renewcommand{\xref}[3]{\hotlink{#1}{#2 -- #3}}
-% -----------------------------------------------------------------------------
-% ? Document-specific \newcommand or \newenvironment commands.
+% ? Document-specific \providecommand or \newenvironment commands.
 
 % Also define the html equivalents.
 
 % degrees symbol
-\newcommand{\dgs}{\hbox{$^\circ$}}
-%\begin{htmlonly}
-%\renewcommand{\dgs}{{\rawhtml &deg;}}
-%\end{htmlonly}
+\providecommand{\dgs}{\hbox{$^\circ$}}
 
 % arcminute symbol
-\newcommand{\arcm}{\hbox{$^\prime$}}
-%\begin{htmlonly}
-%\renewcommand{\arcm}{{\rawhtml &acute;}}
-%\end{htmlonly}
+\providecommand{\arcm}{\hbox{$^\prime$}}
 
 % arcsec symbol
-\newcommand{\arcsec}{\arcm\hskip -0.1em\arcm}
-%\begin{htmlonly}
-%\renewcommand{\arcsec}{{\rawhtml &quot;}}
-%\end{htmlonly}
+\providecommand{\arcsec}{\arcm\hskip -0.1em\arcm}
 
 % hours symbol
-\newcommand{\hr}{\hbox{$^{\rm h}$}}
-\begin{htmlonly}
-\renewcommand{\hr}{~hours}
-\end{htmlonly}
+\providecommand{\hr}{\hbox{$^{\rm h}$}}
 
 % minutes symbol
-\newcommand{\mn}{\hbox{$^{\rm m}$}}
-\begin{htmlonly}
-\renewcommand{\mn}{~minutes}
-\end{htmlonly}
+\providecommand{\mn}{\hbox{$^{\rm m}$}}
 
 % seconds symbol
-\newcommand{\scn}{\hbox{$^{\rm s}$}}
-\begin{htmlonly}
-\renewcommand{\scn}{~seconds}
-\end{htmlonly}
+\providecommand{\scn}{\hbox{$^{\rm s}$}}
 
 % decimal-minutes symbol
-\newcommand{\um}{\hskip-0.3em\hbox{$^{\rm m}$}\hskip-0.08em}
-\begin{htmlonly}
-\renewcommand{\um}{\mn}
-\end{htmlonly}
+\providecommand{\um}{\hskip-0.3em\hbox{$^{\rm m}$}\hskip-0.08em}
 
 % decimal-degree symbol
-\newcommand{\udeg}{\hskip-0.3em\dgs\hskip-0.08em}
-\begin{htmlonly}
-\renewcommand{\udeg}{{\rawhtml &deg;}}
-\end{htmlonly}
+\providecommand{\udeg}{\hskip-0.3em\dgs\hskip-0.08em}
 
 % decimal-second symbol
-\newcommand{\us}{\hskip-0.27em\hbox{$^{\rm s}$}\hskip-0.06em}
-\begin{htmlonly}
-\renewcommand{\us}{\scn}
-\end{htmlonly}
+\providecommand{\us}{\hskip-0.27em\hbox{$^{\rm s}$}\hskip-0.06em}
 
 % decimal-arcminute symbol
-\newcommand{\uarcm}{\hskip-0.28em\arcm\hskip-0.04em}
-\begin{htmlonly}
-\renewcommand{\uarcm}{{\rawhtml &acute;}}
-\end{htmlonly}
+\providecommand{\uarcm}{\hskip-0.28em\arcm\hskip-0.04em}
 
 % decimal-arcsecond symbol
-\newcommand{\uarcs}{\hskip-0.27em\arcsec\hskip-0.02em}
-\begin{htmlonly}
-\renewcommand{\uarcs}{{\rawhtml &quot;}}
-\end{htmlonly}
+\providecommand{\uarcs}{\hskip-0.27em\arcsec\hskip-0.02em}
 
 % centre an asterisk
-\newcommand{\lsk}{\raisebox{-0.4ex}{\rm *}}
+\providecommand{\lsk}{\raisebox{-0.4ex}{\rm *}}
 
 % conditional text
-\newcommand{\latexelsehtml}[2]{#1}
-\begin{htmlonly}
-  \renewcommand{\latexelsehtml}[2]{#2}
-\end{htmlonly}
+\providecommand{\latexelsehtml}[2]{#1}
 
 \hyphenation{which-ever}
 
-% A kind of list item, like description, but with an easily adjustable
-% item separation.  Note that the paragraph and fount-size change are
-% needed to make the revised \baselinestretch work.
-\newlength{\menuwidth}
-\newlength{\menuindent}
-\newcommand{\menuitem}[2]
-  {{\bf #1} \settowidth{\menuwidth}{{\bf #1} }
-  \setlength{\menuindent}{-0.5em}
-  \addtolength{\menuwidth}{-2\menuwidth}
-  \addtolength{\menuwidth}{\textwidth}
-  \addtolength{\menuwidth}{\menuindent}
-  \hspace{\menuindent}\parbox[t]{\menuwidth}{
-  \renewcommand{\baselinestretch}{0.75}\small
-  #2 \par \vspace{1.0ex}
-  \renewcommand{\baselinestretch}{1.0}\normalsize} \\ }
-\begin{htmlonly}
-\newcommand{\menuitem}[2]
-  {\item [\htmlref{#1}{#1}] #2}
-\end{htmlonly}
-
-\newcommand{\classitem}[1]{\item [\htmlref{#1}{#1}]}
-
-% an environment for references (for the SST sstdiytopic command).
-\newenvironment{refs}{\vspace{-4ex} % normally 3ex
-                      \begin{list}{}{\setlength{\topsep}{0mm}
-                                     \setlength{\partopsep}{0mm}
-                                     \setlength{\itemsep}{0mm}
-                                     \setlength{\parsep}{0mm}
-                                     \setlength{\leftmargin}{1.5em}
-                                     \setlength{\itemindent}{-\leftmargin}
-                                     \setlength{\labelsep}{0mm}
-                                     \setlength{\labelwidth}{0mm}}
-                    }{\end{list}}
-
 % Lines for breaking up Appendices A and B.
-\newcommand{\jrule}{\noindent\rule{\textwidth}{0.45mm}}
-\newcommand{\krule}{\vspace*{-1.5ex}
+\providecommand{\jrule}{\noindent\rule{\textwidth}{0.45mm}}
+\providecommand{\krule}{\vspace*{-1.5ex}
                     \item [\rm \rule{\textwidth}{0.15mm}]}
 
 % Frame attributes fount.  Need to find a way for these to stand out.
@@ -261,702 +78,74 @@
 % this was fixed by say having extra braces, the \sstattribute
 % then used roman fount for its headings.  The current lash up
 % appears to work, but needs further investigation or a TeX wizard.
-\newcommand{\att}[1]{\sf #1}
-\begin{htmlonly}
-\renewcommand{\att}[1]{\large{\tt #1}}
-\end{htmlonly}
-\newcommand{\htmlattref}[2]{\htmlref{\att{#1}}{#2}\rm}
+\providecommand{\att}[1]{\textsf{#1}}
+
+\providecommand{\htmlattref}[2]{\htmlref{\att{#1}}{#2}\rm}
 
 % Shorthands for hypertext links.
 % -------------------------------
-\newcommand{\AGIref}{\xref{AGI}{sun48}{}}
-\newcommand{\ARDref}{\xref{ARD}{sun183}{}}
-\newcommand{\AST}{\xref{{\footnotesize AST}}{sun210}{}}
-\newcommand{\ASTERIXref}{\xref{{\footnotesize ASTERIX}}{sun98}{}}
-\newcommand{\ASTROM}{{\footnotesize ASTROM}\normalsize}
-\newcommand{\ASTROMref}{\xref{{\footnotesize ASTROM}}{sun5}{}}
-\newcommand{\autoastrom}{\texttt{autoastrom}}
-\newcommand{\CCDPACKref}{\xref{{\footnotesize CCDPACK}}{sun139}{}}
-\newcommand{\CGSDRref}{\xref{{\footnotesize CGS4DR}}{sun27}{}}
-\newcommand{\CONVERT}{{\footnotesize CONVERT}\normalsize}
-\newcommand{\CONVERTref}{\xref{{\footnotesize CONVERT}}{sun55}{}}
-\newcommand{\CPAN}{\htmladdnormallink{\footnotesize CPAN}{http://www.cpan.org/}}
-\newcommand{\CURSA}{{\footnotesize CURSA}\normalsize}
-\newcommand{\CURSAref}{\xref{{\footnotesize CURSA}}{sun190}{}}
-\newcommand{\ECHOMOPref}{\xref{{\footnotesize ECHOMOP}}{sun152}{}}
-\newcommand{\ESPref}{\xref{{\footnotesize ESP}}{sun180}{}}
-\newcommand{\EXTRACTORref}{\xref{{\footnotesize EXTRACTOR}}{sun226}{}}
-\newcommand{\FIGARO}{{\footnotesize FIGARO}\normalsize}
-\newcommand{\Figaroref}{\xref{{\footnotesize FIGARO}}{sun86}{}}
-\newcommand{\FINDOFFref}{\xref{{\footnotesize FINDOFF}}{sun139}{}}
-\newcommand{\FITSref}{\htmladdnormallink{FITS}{http://fits.gsfc.nasa.gov/}}
-\newcommand{\GAIA}{{\footnotesize GAIA}\normalsize}
-\newcommand{\GAIAref}{\xref{GAIA}{sun214}{}}
-\newcommand{\GWM}{{\footnotesize GWM}\normalsize}
-\newcommand{\GWMref}{\xref{GWM}{sun130}{}}
-\newcommand{\HDSref}{\xref{HDS}{sun92}{}~}
-\newcommand{\HDSTRACEref}{\xref{{\footnotesize HDSTRACE}}{sun102}{}}
-\newcommand{\ICL}{{\footnotesize ICL}\normalsize}
-\newcommand{\ICLref}{\xref{{\footnotesize ICL}}{sg5}{}}
-\newcommand{\IRCAMPACKref}{\xref{{\footnotesize IRCAMPACK}}{sun177}{}}
-\newcommand{\IRAF}{\footnotesize{IRAF}\normalsize}
-\newcommand{\IRAFref}{\htmladdnormallink{\IRAF}{http://iraf.noao.edu/iraf-homepage.html}}
-\newcommand{\IRASref}{\xref{{\footnotesize IRAS90}}{sun163}{}}
-\newcommand{\JCMTDRref}{\xref{{\footnotesize JCMTDR}}{sun132}{}}
-\newcommand{\KAPLIBS}{{\footnotesize KAPLIBS}\normalsize}
-\newcommand{\KAPPA}{{\footnotesize KAPPA}\normalsize}
-\newcommand{\KAPRHref}{\xref{{\footnotesize KAPRH}}{sun239}{}}
-\newcommand{\NDFref}[1]{\htmlref{#1}{ap:NDFformat}~}
-\newcommand{\NDFextref}[1]{\xref{#1}{sun33}{}}
-\newcommand{\NDFPACK}{{\footnotesize NDFPACK}\normalsize}
-\newcommand{\PDAref}{\xref{PDA}{sun194}{}}
-\newcommand{\PGPLOT}{{\footnotesize PGPLOT}\normalsize}
-\newcommand{\PGPLOTref}{\htmladdnormallink{\PGPLOT}{http://astro.caltech.edu/\~{}tjp/pgplot/}}
-\newcommand{\PHOTOMref}{\xref{{\footnotesize PHOTOM}}{sun45}{}}
-\newcommand{\PISAref}{\xref{{\footnotesize PISA}}{sun109}{}}
-\newcommand{\PONGOref}{\xref{{\footnotesize PONGO}}{sun137}{}}
-\newcommand{\PSMERGEref}{\xref{{\footnotesize PSMERGE}}{sun164}{}}
-\newcommand{\TSPref}{\xref{{\footnotesize TSP}}{sun66}{}}
-\newcommand{\POLPACKref}{\xref{{\footnotesize POLPACK}}{sun223}{}}
-\newcommand{\SExtractor}{\xref{{\footnotesize SExtractor}}{sun226}}
-\newcommand{\SkyCat}{\htmladdnormallink{SkyCat}{http://archive.eso.org/skycat/}}
-\newcommand{\SkyCatFAQ}{\htmladdnormallink{SkyCat FAQ}{http://archive.eso.org/skycat/skycat-faq.html}}
-\newcommand{\STLref}{\xref{{\footnotesize STL}}{sun190}{STLREF}}
-\newcommand{\TWODSPECref}{\xref{{\footnotesize TWODSPEC}}{sun16}{}}
+\providecommand{\AGIref}{\xref{AGI}{sun48}{}}
+\providecommand{\ARDref}{\xref{ARD}{sun183}{}}
+\providecommand{\AST}{\xref{{\footnotesize AST}}{sun210}{}}
+\providecommand{\ASTERIXref}{\xref{{\footnotesize ASTERIX}}{sun98}{}}
+\providecommand{\ASTROM}{{\footnotesize ASTROM}\normalsize}
+\providecommand{\ASTROMref}{\xref{{\footnotesize ASTROM}}{sun5}{}}
+\providecommand{\autoastrom}{\texttt{autoastrom}}
+\providecommand{\CCDPACKref}{\xref{{\footnotesize CCDPACK}}{sun139}{}}
+\providecommand{\CGSDRref}{\xref{{\footnotesize CGS4DR}}{sun27}{}}
+\providecommand{\CONVERT}{{\footnotesize CONVERT}\normalsize}
+\providecommand{\CONVERTref}{\xref{{\footnotesize CONVERT}}{sun55}{}}
+\providecommand{\CPAN}{\htmladdnormallink{\footnotesize CPAN}{http://www.cpan.org/}}
+\providecommand{\CURSA}{{\footnotesize CURSA}\normalsize}
+\providecommand{\CURSAref}{\xref{{\footnotesize CURSA}}{sun190}{}}
+\providecommand{\ECHOMOPref}{\xref{{\footnotesize ECHOMOP}}{sun152}{}}
+\providecommand{\ESPref}{\xref{{\footnotesize ESP}}{sun180}{}}
+\providecommand{\EXTRACTORref}{\xref{{\footnotesize EXTRACTOR}}{sun226}{}}
+\providecommand{\FIGARO}{{\footnotesize FIGARO}\normalsize}
+\providecommand{\Figaroref}{\xref{{\footnotesize FIGARO}}{sun86}{}}
+\providecommand{\FINDOFFref}{\xref{{\footnotesize FINDOFF}}{sun139}{}}
+\providecommand{\FITSref}{\htmladdnormallink{FITS}{http://fits.gsfc.nasa.gov/}}
+\providecommand{\GAIA}{{\footnotesize GAIA}\normalsize}
+\providecommand{\GAIAref}{\xref{GAIA}{sun214}{}}
+\providecommand{\GWM}{{\footnotesize GWM}\normalsize}
+\providecommand{\GWMref}{\xref{GWM}{sun130}{}}
+\providecommand{\HDSref}{\xref{HDS}{sun92}{}~}
+\providecommand{\HDSTRACEref}{\xref{{\footnotesize HDSTRACE}}{sun102}{}}
+\providecommand{\ICL}{{\footnotesize ICL}\normalsize}
+\providecommand{\ICLref}{\xref{{\footnotesize ICL}}{sg5}{}}
+\providecommand{\IRCAMPACKref}{\xref{{\footnotesize IRCAMPACK}}{sun177}{}}
+\providecommand{\IRAF}{\footnotesize{IRAF}\normalsize}
+\providecommand{\IRAFref}{\htmladdnormallink{\IRAF}{http://iraf.noao.edu/iraf-homepage.html}}
+\providecommand{\IRASref}{\xref{{\footnotesize IRAS90}}{sun163}{}}
+\providecommand{\JCMTDRref}{\xref{{\footnotesize JCMTDR}}{sun132}{}}
+\providecommand{\KAPLIBS}{{\footnotesize KAPLIBS}\normalsize}
+\providecommand{\KAPPA}{{\footnotesize KAPPA}\normalsize}
+\providecommand{\KAPRHref}{\xref{{\footnotesize KAPRH}}{sun239}{}}
+\providecommand{\NDFref}[1]{\htmlref{#1}{ap:NDFformat}~}
+\providecommand{\NDFextref}[1]{\xref{#1}{sun33}{}}
+\providecommand{\NDFPACK}{{\footnotesize NDFPACK}\normalsize}
+\providecommand{\PDAref}{\xref{PDA}{sun194}{}}
+\providecommand{\PGPLOT}{{\footnotesize PGPLOT}\normalsize}
+\providecommand{\PGPLOTref}{\htmladdnormallink{\PGPLOT}{http://astro.caltech.edu/\~{}tjp/pgplot/}}
+\providecommand{\PHOTOMref}{\xref{{\footnotesize PHOTOM}}{sun45}{}}
+\providecommand{\PISAref}{\xref{{\footnotesize PISA}}{sun109}{}}
+\providecommand{\PONGOref}{\xref{{\footnotesize PONGO}}{sun137}{}}
+\providecommand{\PSMERGEref}{\xref{{\footnotesize PSMERGE}}{sun164}{}}
+\providecommand{\TSPref}{\xref{{\footnotesize TSP}}{sun66}{}}
+\providecommand{\POLPACKref}{\xref{{\footnotesize POLPACK}}{sun223}{}}
+\providecommand{\SExtractor}{\xref{{\footnotesize SExtractor}}{sun226}}
+\providecommand{\SkyCat}{\htmladdnormallink{SkyCat}{http://archive.eso.org/skycat/}}
+\providecommand{\SkyCatFAQ}{\htmladdnormallink{SkyCat FAQ}{http://archive.eso.org/skycat/skycat-faq.html}}
+\providecommand{\STLref}{\xref{{\footnotesize STL}}{sun190}{STLREF}}
+\providecommand{\TWODSPECref}{\xref{{\footnotesize TWODSPEC}}{sun16}{}}
 
-
-% SST definitions
-% ---------------
-
-% +
-%  Name:
-%     SST.TEX
-
-%  Purpose:
-%     Define LaTeX commands for laying out Starlink routine descriptions.
-
-%  Language:
-%     LaTeX
-
-%  Type of Module:
-%     LaTeX data file.
-
-%  Description:
-%     This file defines LaTeX commands which allow routine documentation
-%     produced by the SST application PROLAT to be processed by LaTeX and
-%     by LaTeX2html. The contents of this file should be included in the
-%     source prior to any statements that make of the sst commands.
-
-%  Notes:
-%     The commands defined in the style file html.sty provided with LaTeX2html
-%     are used. These should either be made available by using the appropriate
-%     sun.tex (with hypertext extensions) or by putting the file html.sty
-%     on your TEXINPUTS path (and including the name as part of the
-%     documentstyle declaration).
-
-%  Authors:
-%     RFWS: R.F. Warren-Smith (STARLINK)
-%     PDRAPER: P.W. Draper (Starlink - Durham University)
-%     MJC: Malcolm J. Currie (STARLINK)
-
-%  History:
-%     10-SEP-1990 (RFWS):
-%        Original version.
-%     10-SEP-1990 (RFWS):
-%        Added the implementation status section.
-%     12-SEP-1990 (RFWS):
-%        Added support for the usage section and adjusted various spacings.
-%     8-DEC-1994 (PDRAPER):
-%        Added support for simplified formatting using LaTeX2html.
-%     1995 October 4 (MJC):
-%        Added goodbreaks and pagebreak[3] in various places to improve
-%        pages breaking before headings, not immediately after.
-%        Corrected banner width.
-%     2-DEC-1998 (DSB):
-%        Added sstattributetype (copied from sun210.tex).
-%     2004 August 6 (MJC):
-%        Added sstattribute.
-%     {enter_further_changes_here}
-
-%  Bugs:
-%     {note_any_bugs_here}
-
-% -
-
-%  Define length variables.
-\newlength{\sstbannerlength}
-\newlength{\sstcaptionlength}
-\newlength{\sstexampleslength}
-\newlength{\sstexampleswidth}
-
-%  Define a \tt font of the required size.
-\newfont{\ssttt}{cmtt10 scaled 1095}
-
-%  Define a command to produce a routine header, including its name,
-%  a purpose description and the rest of the routine's documentation.
-\newcommand{\sstroutine}[3]{
-   \goodbreak
-   \markboth{{\stardocname}~ --- #1}{{\stardocname}~ --- #1}
-   \rule{\textwidth}{0.5mm}
-   \vspace{-7ex}
-   \newline
-   \settowidth{\sstbannerlength}{{\Large {\bf #1}}}
-   \setlength{\sstcaptionlength}{\textwidth}
-   \setlength{\sstexampleslength}{\textwidth}
-   \addtolength{\sstbannerlength}{0.5em}
-   \addtolength{\sstcaptionlength}{-2.0\sstbannerlength}
-   \addtolength{\sstcaptionlength}{-4.9pt}
-   \settowidth{\sstexampleswidth}{{\bf Examples:}}
-   \addtolength{\sstexampleslength}{-\sstexampleswidth}
-   \parbox[t]{\sstbannerlength}{\flushleft{\Large {\bf #1}}}
-   \parbox[t]{\sstcaptionlength}{\center{\Large #2}}
-   \parbox[t]{\sstbannerlength}{\flushright{\Large {\bf #1}}}
-   \begin{description}
-      #3
-   \end{description}
-}
-
-%  Define a command to produce an attribute header, including its name,
-%  a purpose description and the rest of the routine's documentation.
-%  Define a command to produce a routine header, including its name,
-%  a purpose description and the rest of the routine's documentation.
-\newcommand{\sstattribute}[3]{
-   \goodbreak
-   \markboth{{\stardocname}~ --- #1}{{\stardocname}~ --- #1}
-   \rule{\textwidth}{0.5mm}
-   \vspace{-7ex}
-   \newline
-   \settowidth{\sstbannerlength}{{\Large {\att #1}}}
-   \setlength{\sstcaptionlength}{\textwidth}
-   \setlength{\sstexampleslength}{\textwidth}
-   \addtolength{\sstbannerlength}{0.5em}
-   \addtolength{\sstcaptionlength}{-2.0\sstbannerlength}
-   \addtolength{\sstcaptionlength}{-4.9pt}
-   \settowidth{\sstexampleswidth}{{\bf Examples:}}
-   \addtolength{\sstexampleslength}{-\sstexampleswidth}
-   \parbox[t]{\sstbannerlength}{\flushleft{\Large {\att #1}}}
-   \parbox[t]{\sstcaptionlength}{\center{\Large #2}}
-   \parbox[t]{\sstbannerlength}{\flushright{\Large {\att #1}}}
-   \begin{description}
-      #3
-   \end{description}
-}
-
-%  Format the description section.
-\newcommand{\sstdescription}[1]{\item[Description:] #1}
-
-%  Format the usage section.
-\newcommand{\sstusage}[1]{\pagebreak[3] \item[Usage:] \mbox{} \\[1.3ex] {\ssttt #1}}
-
-%  Format the invocation section.
-\newcommand{\sstinvocation}[1]{\sloppy \item[Invocation:]\hspace{0.4em}{\tt #1}}
-
-%  Format the attribute data type section.
-\newcommand{\sstattributetype}[1]{
-   \item[Type:] \mbox{} \\
-      #1
-}
-
-%  Format the arguments section.
-\newcommand{\sstarguments}[1]{
-   \item[Arguments:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the returned value section (for a function).
-\newcommand{\sstreturnedvalue}[1]{
-   \item[Returned Value:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the parameters section (for an application).
-\newcommand{\sstparameters}[1]{
-   \goodbreak
-   \item[Parameters:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the output results parameters section (for an application).
-\newcommand{\sstresparameters}[1]{
-   \goodbreak
-   \item[Results Parameters:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the graphics style parameters section (for an application).
-\newcommand{\sstgraphparameters}[1]{
-   \goodbreak
-   \item[Graphics-style Parameters:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the applicability section.
-\newcommand{\sstapplicability}[1]{
-   \item[Clas\mbox{}s Applicability:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Format the examples section.
-\newcommand{\sstexamples}[1]{
-   \goodbreak
-   \item[Examples:] \mbox{} \\
-   \vspace{-3.5ex}
-   \begin{description}
-      #1
-   \end{description}
-}
-
-%  Define the format of a subsection in a normal section.
-\newcommand{\sstsubsection}[1]{ \item[{#1}] \mbox{} \\}
-
-%  Define the format of a subsection in the examples section.
-%\newcommand{\sstexamplesubsection}[2]{\sloppy
-%\item[\parbox{\sstexampleslength}{\ssttt #1}] \mbox{} \\ #2 }
-\newcommand{\sstexamplesubsection}[2]{\sloppy \item{\ssttt #1} \mbox{} \\ #2 }
-
-%  Define the format of a long-example subsection in the examples section.
-%\newcommand{\sstlongexamplesubsection}[3]{\sloppy
-%\item[\ssttt \hspace{-0.5em}#1] {\ssttt #2} \mbox{} \\ #3}
-\newcommand{\sstlongexamplesubsection}[3]{\sloppy \item{\ssttt #1} {\ssttt #2} \mbox{} \\ #3}
-
-%  Format the notes section.
-\newcommand{\sstnotes}[1]{\pagebreak[3] \item[Notes:] \mbox{} \\[1.3ex] #1}
-
-%  Provide a general-purpose format for additional (DIY) sections.
-\newcommand{\sstdiytopic}[2]{\goodbreak \item[{\hspace{-0.35em}#1\hspace{-0.35em}:}] \mbox{} \\[1.3ex] #2}
-
-%  Format the implementation status section.
-\newcommand{\sstimplementationstatus}[1]{
-   \pagebreak[3] \item[{Implementation Status:}] \mbox{} \\[1.3ex] #1}
-
-%  Format the bugs section.
-\newcommand{\sstbugs}[1]{\item[Bugs:] #1}
-
-%  Specify a variant of the itemize environment where the top separation
-%  is reduced.  It is needed because a \vspace is ignored in the
-%  \sstitemlist command.
-\newenvironment{sstitemize}{%
-  \vspace{-4.3ex}\begin{itemize}}{\end{itemize}}
-
-%  Format a list of items while in paragraph mode.
-\newcommand{\sstitemlist}[1]{
-  \mbox{} \\
-  \vspace{-3.5ex}
-  \begin{sstitemize}
-     #1
-  \end{sstitemize}
-}
-
-%  Format a list of items while in paragraph mode, and where there
-%  is a heading, thus the negative vertical space is not needed.
-\newcommand{\ssthitemlist}[1]{
-  \latexonly{
-  \mbox{} \\
-  \vspace{-5.0ex}
-  }
-  \begin{itemize}
-     #1
-  \end{itemize}
-}
-
-%  Define the format of an item.
-\newcommand{\sstitem}{\item}
-
-%  Now define html equivalents of those already set. These are used by
-%  latex2html and are defined in the html.sty files.
-\begin{htmlonly}
-
-%  Re-define \ssttt.
-   \newcommand{\ssttt}{\tt}
-
-%  sstroutine.
-   \renewcommand{\sstroutine}[3]{
-      \subsection{#1\xlabel{#1}-\label{#1}#2}
-      \begin{description}
-         #3
-      \end{description}
-   }
-
-%  sstattribute. Note the further level of subsectioning.
-   \renewcommand{\sstattribute}[3]{
-      \subsubsection{#1\xlabel{#1}-\label{#1}#2}
-      \begin{description}
-         #3
-      \end{description}
-   }
-
-%  sstdescription
-   \renewcommand{\sstdescription}[1]{\item[Description:]
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstusage
-   \renewcommand{\sstusage}[1]{\htmlref{\item[Usage:]}{ap:usage} \mbox{} \\ {\ssttt #1}}
-
-%  sstinvocation
-   \renewcommand{\sstinvocation}[1]{\item[Invocation:]
-      \begin{description}
-         {\ssttt #1}
-      \end{description}
-   }
-
-%  sstarguments
-   \renewcommand{\sstarguments}[1]{
-      \item[Arguments:]
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstreturnedvalue
-   \renewcommand{\sstreturnedvalue}[1]{
-      \item[Returned Value:]
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstparameters
-   \renewcommand{\sstparameters}[1]{
-      \htmlref{\item[Parameters:]}{se:param}
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstresparameters
-   \renewcommand{\sstresparameters}[1]{
-      \htmlref{\item[Results Parameters:]}{se:parout}
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstexamples
-   \renewcommand{\sstexamples}[1]{
-      \htmlref{\item[Examples:]}{ap:example}
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstsubsection
-   \renewcommand{\sstsubsection}[1]{\item[{#1}]}
-
-%  sstexamplesubsection
-   \renewcommand{\sstexamplesubsection}[2]{\item[{\ssttt #1}] \\ #2}
-
-%  sstnotes
-   \renewcommand{\sstnotes}[1]{\item[Notes:]
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstdiytopic
-   \renewcommand{\sstdiytopic}[2]{\item[{#1}]
-      \begin{description}
-         #2
-      \end{description}
-   }
-
-%  sstimplementationstatus
-   \renewcommand{\sstimplementationstatus}[1]{\item[Implementation Status:]
-      \begin{description}
-         #1
-      \end{description}
-   }
-
-%  sstitemlist
-   \newcommand{\sstitemlist}[1]{
-      \begin{itemize}
-         #1
-      \end{itemize}
-   }
-\end{htmlonly}
-
-%  End of sst.tex layout definitions.
-%.
-
-% End of SST definitions
-% ----------------------
-
-%    Starlink definitions for \LaTeX\ macros used in MAN output
-%
-%  Description:
-%    As much as possible of the output from the MAN automatic manual generator
-%    uses calls to user-alterable macros rather than direct calls to built-in
-%    \LaTeX\ macros. This file is a version of the MAN default definitions for
-%    these macros modified for Starlink preferences.
-%
-%  Language:
-%    \LaTeX
-%
-%  Support:
-%    William Lupton, {AAO}
-%    Alan Chipperfield (RAL)
-%-
-%  History:
-%    16-Nov-88 - WFL - Add definitions to permit hyphenation to work on
-%                      words containing special characters and in teletype fonts.
-%    27-Feb-89 - AJC - Redefine \manroutine
-%                      Added \manheadstyle
-%                      Switch order of argument descriptors
-%    07-Mar-89 - AJC - Narrower box for parameter description
-%                      Remove Intro section and other unused bits
-%
-% permit hyphenation when in teletype font (support 9,10,11,12 point only -
-% could extend), define lccodes for special characters so that the hyphen-
-% ation algorithm is not switched off. Define underscore character to be
-% explicit underscore rather than lots of kerns etc.
-
-\typeout{Starlink MAN macros. Released 27th February 1989}
-
-%\hyphenchar\nintt=`-\hyphenchar\tentt=`-\hyphenchar\elvtt=`-\hyphenchar\twltt=`-
-
-\lccode`_=`_\lccode`$=`$
-
-%    Macros used in the .TEX_SUMMARY file
-%
-%  Description:
-%    There is a command to introduce a new section (mansection) and a list-like
-%    environment (mansectionroutines) that handles the list of routines in the
-%    current section. In addition a mansectionitem command can be used instead
-%    of the item command to introduce a new routine in the current section.
-%-
-
-\newcommand {\mansection}[2]{\subsection{#1 --- #2}}
-
-\newenvironment {mansectionroutines}{\begin{description}\begin{description}}%
-{\end{description}\end{description}}
-
-\newcommand {\mansectionitem}[1]{\item [#1:] \mbox{}}
-
-%    Macros used in the .TEX_DESCR file
-%
-%  Description:
-%    There is a command to introduce a new routine (manroutine) and a list-like
-%    environment (manroutinedescription) that handles the list of paragraphs
-%    describing the current routine. In addition a manroutineitem command can
-%    be used instead of the item command to introduce a new paragraph for the
-%    current routine.
-%
-%    Two-column tables (the ones that can occur anywhere and which are
-%    triggered by "=>" as the second token on a line) are bracketed by a
-%    new environment (mantwocolumntable). Other sorts of table are introduced
-%    by relevant  environments (manparametertable, manfunctiontable and
-%    manvaluetable). The definitions of these environments call various other
-%    user-alterable commands, thus allowing considerable user control over such
-%    tables... (to be filled in when the commands have been written)
-%-
-
-\newcommand {\manrule}{\rule{\textwidth}{0.5mm}}
-
-%\newcommand {\manroutine}[2]{\subsection{#1 --- #2}}
-\newlength{\speccaption}
-\newlength{\specname}
-\newcommand{\manroutine}[2]{\goodbreak
-                          \markboth{{\stardocname}~ --- #1}{{\stardocname}~ --- #1}
-                          \rule{\textwidth}{0.5mm}  % draw thick line
-                          \settowidth{\specname}{{\Large {\bf #1}}}
-                        % left and right box width is text width plus gap
-                          \addtolength{\specname}{4ex}
-                        % caption width is width of page less the two names
-                        % less than empirical fudge factor
-                          \setlength{\speccaption}{\textwidth}
-                          \addtolength{\speccaption}{-2.0\specname}
-                          \addtolength{\speccaption}{-4.9pt}
-                        % move text up the page because \flushleft environ-
-                        % ment creates a paragraph
-                          \vspace{-7mm}
-                          \newline
-                          \parbox[t]{\specname}{\flushleft{\Large {\bf #1}}}
-                          \parbox[t]{\speccaption}{\flushleft{\Large #2}}
-                          \parbox[t]{\specname}{\flushright{\Large {\bf #1}}}
-                          }
-
-\newenvironment {manroutinedescription}{\begin{description}}{\end{description}}
-
-\newcommand {\manroutineitem}[2]{\pagebreak[3]\item [#1:] #2\mbox{}}
-
-
-% parameter tables
-
-\newcommand {\manparametercols}{lllp{90mm}}
-
-\newcommand {\manparameterorder}[3]{#2 & #3 & #1 &}
-
-\newcommand {\manparametertop}{}
-
-\newcommand {\manparameterblank}{\gdef\manparameterzhl{}\gdef\manparameterzss{}}
-
-\newcommand {\manparameterbottom}{}
-
-\newenvironment {manparametertable}{\gdef\manparameterzss{}%
-\gdef\manparameterzhl{}\hspace*{\fill}\vspace*{-\partopsep}\begin{trivlist}%
-\item[]\begin{tabular}{\manparametercols}\manparametertop}{\manparameterbottom%
-\end{tabular}\end{trivlist}}
-
-\newcommand {\manparameterentry}[3]{\manparameterzss\gdef\manparameterzss{\\}%
-\gdef\manparameterzhl{\hline}\manparameterorder{#1}{#2}{#3}}
-
-
-% list environments
-
-\newenvironment {manenumerate}{\begin{enumerate}}{\end{enumerate}}
-
-\newcommand {\manenumerateitem}[1]{\item [#1]}
-
-\newenvironment {manitemize}{\begin{itemize}}{\end{itemize}}
-
-\newcommand {\manitemizeitem}{\item}
-
-\newenvironment
-{mandescription}{\begin{description}\item{~}\vspace*{-5.6ex}\begin{description}}%
-{\end{description}\end{description}}
-
-\newcommand {\mandescriptionitem}[1]{\item [#1]}
-
-\newcommand {\mantt}{\tt}
-
-% manheadstyle for Starlink
-\newcommand {\manheadstyle}{}
-
-%\catcode`\_=12
 
 % ? End of document specific commands
 %------------------------------------------------------------------------------
 %  Title Page.
 %  ===========
-\renewcommand{\thepage}{\roman{page}}
 \begin{document}
-\thispagestyle{empty}
-
-%  Latex document header.
-%  ======================
-\begin{latexonly}
-   CCLRC / {\sc Rutherford Appleton Laboratory} \hfill {\bf \stardocname}\\
-   {\large Particle Physics \& Astronomy Research Council}\\
-   {\large Starlink Project\\}
-   {\large \stardoccategory\ \stardocnumber}
-   \begin{flushright}
-   \stardocauthors\\
-   \stardocdate
-   \end{flushright}
-   \vspace{-4mm}
-   \rule{\textwidth}{0.5mm}
-   \vspace{5mm}
-   \begin{center}
-   {\Huge\bf  \stardoctitle \\ [2.5ex]}
-   {\LARGE\bf \stardocversion \\ [4ex]}
-   {\Huge\bf  \stardocmanual}
-   \end{center}
-   \vspace{5mm}
-
-% ? Heading for abstract if used.
-   \vspace{10mm}
-   \begin{center}
-      {\Large\bf Abstract}
-   \end{center}
-% ? End of heading for abstract.
-\end{latexonly}
-
-%  HTML documentation header.
-%  ==========================
-\begin{htmlonly}
-   \xlabel{}
-   \begin{rawhtml} <H1> \end{rawhtml}
-      \stardoctitle\\
-      \stardocversion\\
-      \stardocmanual
-   \begin{rawhtml} </H1> \end{rawhtml}
-
-% ? Add picture here if required.
-%  \htmladdimg{sun95_cover.gif}
-% ? End of picture
-
-   \begin{rawhtml} <P> <I> \end{rawhtml}
-   \stardoccategory \stardocnumber \\
-   \stardocauthors \\
-   \stardocdate
-   \begin{rawhtml} </I> </P> <H3> \end{rawhtml}
-      \htmladdnormallink{CCLRC}{http://www.cclrc.ac.uk} /
-      \htmladdnormallink{Rutherford Appleton Laboratory}
-                        {http://www.cclrc.ac.uk/ral} \\
-      \htmladdnormallink{Particle Physics \& Astronomy Research Council}
-                        {http://www.pparc.ac.uk} \\
-   \begin{rawhtml} </H3> <H2> \end{rawhtml}
-      \htmladdnormallink{Starlink Project}{http://www.starlink.ac.uk/}
-   \begin{rawhtml} </H2> \end{rawhtml}
-   \htmladdnormallink{\htmladdimg{source.gif} Retrieve hardcopy}
-      {http://www.starlink.ac.uk/cgi-bin/hcserver?\stardocsource}\\
-
-%  HTML document table of contents.
-%  ================================
-%  Add table of contents header and a navigation button to return to this
-%  point in the document (this should always go before the abstract \section).
-  \label{stardoccontents}
-  \begin{rawhtml}
-    <HR>
-    <H2>Contents</H2>
-  \end{rawhtml}
-  \renewcommand{\latexonlytoc}[0]{}
-  \htmladdtonavigation{\htmlref{\htmladdimg{contents_motif.gif}}
-        {stardoccontents}}
-
-% ? New section for abstract if used.
-  \section{\xlabel{abstract}Abstract}
-% ? End of new section for abstract
-\end{htmlonly}
-
-% -----------------------------------------------------------------------------
-% ? Document Abstract. (if used)
-%   ==================
-We describe the \autoastrom\ package, which provides an interface to the
-\ASTROM\ application. This creates a semi-automatic route to doing astrometry
-on CCD images.
-
-% ? End of document abstract
-% -----------------------------------------------------------------------------
-% ? Latex document Table of Contents (if used).
-%  ===========================================
- \newpage
- \begin{latexonly}
-   \setlength{\parskip}{0mm}
-   \latexonlytoc
-   \setlength{\parskip}{\medskipamount}
-   \markboth{\stardocname}{\stardocname}
-%  \markright{\stardocname}
- \end{latexonly}
-% ? End of Latex document table of contents
-% -----------------------------------------------------------------------------
-% \newpage
-\cleardoublepage
-\renewcommand{\thepage}{\arabic{page}}
-\setcounter{page}{1}
-
-% The main text begins here.
-% -----------------------------------------------------------------------------
+\scfrontmatter
 
 \section{\xlabel{se_intro}Introduction\label{se:intro}}
 
@@ -966,7 +155,7 @@ on CCD images.
 
 Starlink's \ASTROMref\ application provides powerful astrometry facilities, for
 analysing astronomical images; it is, however, rather cumbersome to use. As
-described in SUN/5, \ASTROM\ can:
+described in \xref{SUN/5}{sun5}{}, \ASTROM\ can:
 
 \begin{itemize}
 \item obtain the plate centre and plate scale of a CCD image, by comparing
@@ -997,9 +186,9 @@ astrometry available as a set of FITS-WCS header cards.  \end{itemize}
 \section{\xlabel{se_usage}Usage\label{se:usage}}
 
 Summary:
-\begin{quote}
-\autoastrom\ [\texttt{options...}] $<$\texttt{NDF}$>$
-\end{quote}
+\begin{terminalv}
+autoastrom [options...] <NDF>
+\end{terminalv}
 
 The options available are described in Table \ref{tab:options}. String or
 integer values are given in the form \texttt{--catalogue=usno@eso}; those
@@ -1127,7 +316,7 @@ file (see Section~\ref{sb:options:keepfits}).  You can choose both, either, or
 even choose neither and throw the results away (strange person!).
 
 The FITS files which \autoastrom\ produces are in fact generated by \ASTROM.
-As discussed in SUN/5, these employ a slight extension to the FITS-WCS
+As discussed in \xref{SUN/5}{sun5}{}, these employ a slight extension to the FITS-WCS
 standards, since they necessarily include distortion information which has
 been deferred until Paper~III \cite{fitswcs3}.  Nonetheless, they are
 perfectly conformant.  If, however, \autoastrom\ had to be configured with
@@ -1160,13 +349,13 @@ You can tell \autoastrom\ how to use the proxies by using the standard
 \texttt{HTTP\_PROXY} environment variable, which you set through something
 like
 
-\begin{quote}
-  \texttt{csh\% setenv HTTP\_PROXY http://wwwcache.example.ac.uk:8080/}
-\end{quote}
+\begin{terminalv}
+csh% setenv HTTP_PROXY http://wwwcache.example.ac.uk:8080/
+\end{terminalv}
 or
-\begin{quote}
-  \texttt{sh\% HTTP\_PROXY=http://www.example.ac.uk:8080/; export HTTP\_PROXY}
-\end{quote}
+\begin{terminalv}
+sh% HTTP_PROXY=http://www.example.ac.uk:8080/; export HTTP_PROXY
+\end{terminalv}
 depending on whether you use a csh-like (tcsh) or sh-like (bash, zsh) shell.
 
 Your local computing service can advise you on the appropriate value for this
@@ -1184,9 +373,9 @@ make it quiet.
 Some options take suboptions.  For example, the \texttt{--obsdata} option
 might be given as
 
-\begin{quote}
-  \texttt{--obsdata=ra=12:34:56,dec=-10:0:0}
-\end{quote}
+\begin{terminalv}
+--obsdata=ra=12:34:56,dec=-10:0:0
+\end{terminalv}
 
 where the comma-separated list of suboptions is given as the
 \texttt{--obsdata} option argument.
@@ -1222,9 +411,9 @@ Type: string; default (presently): `usno@eso'
 Specifies a pre-existing catalogue of objects in the CCD frame. The format is
 that produced as output by \SExtractor\ when \texttt{catalog\_type} is set to
 \texttt{ASCII\_HEAD}. The file starts with a sequence of lines of the form
-\begin{quote}
-\texttt{\# $<$column$>$ $<$colname$>$ $<$optional comment$>$}
-\end{quote}
+\begin{terminalv}
+# <column> <colname> <optional comment>
+\end{terminalv}
 
 The \textit{colnum} numbers run from 1 to the number of columns; the
 \textit{colname} is one of a set of column named defined in the \SExtractor\
@@ -1474,9 +663,9 @@ The value of the \texttt{--obsdata} option can specify approximate astrometry
 through a comma-separated list of \texttt{key=value} pairs.  For example, to
 supply a value for the centre of a CCD, overriding any astrometry in the file,
 you might write
-\begin{quote}
-  \texttt{--obsdata=ra=14:24:00,dec=-12.34}
-\end{quote}
+\begin{terminalv}
+ --obsdata=ra=14:24:00,dec=-12.34
+\end{terminalv}
 This value indicates the centre of the CCD even when this is not the centre of
 distortion, which would be the case when, for example, the CCD represents an
 off-centre section of a Schmidt plate.
@@ -1487,9 +676,9 @@ position from the \texttt{obsdata} option and a plate scale from the file's
 own astrometry.  By default, a position given here overrides any other WCS
 information; thus to supply a position as a backup, in case there is
 \textbf{no} astrometry elsewhere, you could write
-\begin{quote}
-  \texttt{--obsdata=source=AST:FITS:USER,ra=14:24:00,dec=-12.34}
-\end{quote}
+\begin{terminalv}
+--obsdata=source=AST:FITS:USER,ra=14:24:00,dec=-12.34
+\end{terminalv}
 The available astrometry keywords are in Table~\ref{tab:obsdata}.
 
 \begin{table}
@@ -1646,20 +835,20 @@ Starlink CVS repository.
 
 The pattern matching facilities which \autoastrom\ relies come from the
 FINDOFF application within \CCDPACKref. There are further details in
-SUN/139. You need version 4.0-1 at least, and the program respects any setting
+\xref{SUN/139}{sun139}. You need version 4.0-1 at least, and the program respects any setting
 of the \texttt{CCDPACK\_DIR} environment variable.
 
-\autoastrom\ requires \AST\ 1.8-1 or better. See SUN/211 on information about
+\autoastrom\ requires \AST\ 1.8-1 or better. See \xref{SUN/211}{sun211}{} on information about
 AST.
 
 Object detection is performed by Extractor, which is the Starlink version of
-Emmanuel Bertin's \SExtractor. Extractor is documented in SUN/226. See also
+Emmanuel Bertin's \SExtractor. Extractor is documented in \xref{SUN/226}{sun226}{}. See also
 the SExtractor manual MUD/165, the home of SExtractor on the web
 \cite{sextractor-web}, the distribution location \cite{sextractor-ftp}, and
 the original SExtractor article \cite{sextractor-article}.
 
 If you need to supply the inital astrometry which \autoastrom\ requires, you
-can do that using \GAIA. This is documented in SUN/214, but it's very easy to
+can do that using \GAIA. This is documented in \xref{SUN/214}{sun214}{}, but it's very easy to
 use, and you might be best to simply start it up (give the command
 \texttt{gaia image\_name}, presuming you have already done the initialisation
 to use Starlink software) and experiment.
@@ -1697,7 +886,9 @@ application could process images from multiple CCDs arranged in a mosaic.
 The script inherits some limitations from \ASTROM\, and some from CCDPACK's
 FINDOFF.
 
-The limitations due to \ASTROM\ are as follows (quoted from SUN/5, Section~5):
+The limitations due to \ASTROM\ are as follows (quoted from \xref{SUN/5, Section~5}{sun5}{limitations}):
+
+\begin{quote}
 
 \ASTROM\ aims to deliver results better than 1\arcsec\ from typical Schmidt
 plate measurements, and better than 0.1\arcsec\ from carefully measured JKT and
@@ -1724,6 +915,8 @@ of a number of shortcomings, including the following:
 Despite these limitations, which stem mainly from the need for simplicity of
 use, the accuracy of the result tends in practice to be dominated by the
 quality of the input data rather than by \ASTROM\ itself.
+
+\end{quote}
 
 Further, \ASTROM\ requires that at least 10 reference stars are available.
 Since \autoastrom\ obtains its reference stars from well-stocked catalogues,
